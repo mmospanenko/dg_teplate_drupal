@@ -6,14 +6,14 @@ services:
     depends_on:
       - mysql
     ports:
-      - 8000:80
+      - 80:80
     restart: always
     volumes:
-      - ./html:/var/www/html
+      # - ./html:/var/www/html
       # - ./html/modules:/var/www/html/modules
       # - ./html/profiles:/var/www/html/profiles
       # - ./html/themes:/var/www/html/themes
-      # - ./html/sites:/var/www/html/sites
+      - ./html/sites:/var/www/html/sites
   mysql:
     image: mysql:5.7
     volumes:
