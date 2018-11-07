@@ -1,19 +1,32 @@
 version: '3.3'
 
 services:
-  drupal:
-    image: drupal:8-apache
+  php:
+    image: wodby/drupal-php:5.6-dev-4.9.0
+    environment:
+      DB_HOST: mysql
+      DB_USER: drupal
+      DB_PASSWORD: drupal
+      DB_NAME: drupal
+      DB_DRIVER: mysql
+      COLUMNS: 80
+    volumes:
+      - ./public_html:/var/www/html
+
+  apache:
+    image: wodby/apache:2.4-4.0.2
     depends_on:
-      - mysql
+     - php
+    environment:
+      APACHE_LOG_LEVEL: debug
+      APACHE_BACKEND_HOST: php
+      APACHE_VHOST_PRESET: php
+      APACHE_DOCUMENT_ROOT: /var/www/html
     ports:
       - 80:80
-    restart: always
     volumes:
-      # - ./html:/var/www/html
-      # - ./html/modules:/var/www/html/modules
-      # - ./html/profiles:/var/www/html/profiles
-      # - ./html/themes:/var/www/html/themes
-      - ./html/sites:/var/www/html/sites
+      - ./public_html:/var/www/html
+
   mysql:
     image: mysql:5.7
     volumes:
